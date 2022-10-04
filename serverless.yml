@@ -81,6 +81,12 @@ functions:
       - http:
           path: /v1/getAllKittens
           method: get
+  kitten_by_name:
+    handler: handler.kitten_by_name
+    events:
+      - http:
+          path: /v1/getKittenByName/{name}
+          method: get
   kittens_update:
     handler: handler.kittens_update
     events:

@@ -68,14 +68,40 @@ def kittens_list(event, context):
         # )
     except Exception as e:
         print(e)
-        return {
+        response = {
             "statusCode": 500,
-            "message": "Some error occured!"
+            "body": json.dumps("Some Error Occured!")
         }
+        return response
     print("Get Result", getResults)
     response = {
         "statusCode": 200,
         "body": json.dumps(getResults["Items"])
+    }
+    return response
+
+
+def kitten_by_name(event, context):
+    print("Event: ", event)
+    print("Context: ", context)
+    print("Name: ", event["pathParameters"]["name"])
+    dynamodb = boto3.client("dynamodb")
+    getResult = {}
+    try:
+        getResult = dynamodb.get_item(
+            TableName=os.environ["DYNAMODB_TABLE_NAME"],
+            Key={"kittenName": {"S": str(event["pathParameters"]["name"])}}
+        )
+    except Exception as e:
+        response = {
+            "statusCode": 500,
+            "body": json.dumps(e.message)
+        }
+        return response
+    print("Get Result: ", getResult)
+    response = {
+        "statusCode": 200,
+        "body": json.dumps(getResult["Item"])
     }
     return response
 
