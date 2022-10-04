@@ -29,13 +29,16 @@ def hello(event, context):
 def kittens_create(event, context):
     print("Event: ", event)
     print("Context: ", context)
+    print("Body: ", event["body"])
+    data = json.loads(event["body"])
+    print("Data: ", data)
     dynamodb = boto3.client("dynamodb")
     try:
         createResults = dynamodb.put_item(
             TableName=os.environ["DYNAMODB_TABLE_NAME"],
             Item={
-                "kittenName": {"S": "Tom"},
-                "kittenAge": {"N": "20"}
+                "kittenName": {"S": data["kittenName"]},
+                "kittenAge": {"N": str(data["kittenAge"])}
             }
         )
     except Exception as e:
