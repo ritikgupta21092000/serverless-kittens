@@ -10,5 +10,9 @@
   "license": "ISC",
   "dependencies": {
     "serverless-pseudo-parameters": "^2.6.1"
+  },
+  "devDependencies": {
+    "serverless-dynamodb-local": "^0.2.40",
+    "serverless-offline": "^11.0.1"
   }
 }

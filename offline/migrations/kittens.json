@@ -1,0 +1,21 @@
+{
+    "Table": {
+        "TableName": "kittens-table",
+        "KeySchema": [
+            {
+                "AttributeName": "kittenName",
+                "KeyType": "HASH"
+            }
+        ],
+        "AttributeDefinitions": [
+            {
+                "AttributeName": "kittenName",
+                "AttributeType": "S"
+            }
+        ],
+        "ProvisionedThroughput": {
+            "ReadCapacityUnits": 1,
+            "WriteCapacityUnits": 1
+        }
+    }
+}

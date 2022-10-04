@@ -37,7 +37,7 @@ provider:
         - dynamodb:GetItem
         - dynamodb:UpdateItem
         - dynamodb:DeleteItem
-      Resource: arn:aws:dynamodb:${aws:region}:${aws:accountId}:table/${self:service}-kittens-${opt:stage}
+      Resource: arn:aws:dynamodb:${aws:region}:${aws:accountId}:table/${self:service}-kittens-${sls:stage}
   #  iam:
   #    role:
   #      statements:
@@ -57,7 +57,7 @@ provider:
 
   # you can define service wide environment variables here
   environment:
-    DYNAMODB_TABLE_NAME: ${self:service}-kittens-${opt:stage}
+    DYNAMODB_TABLE_NAME: ${self:service}-kittens-${sls:stage}
 
 # you can add packaging information here
 #package:
@@ -67,7 +67,21 @@ provider:
 #    - include-me.py
 #    - include-me-dir/**
 plugins:
-  - serverless-pseudo-parameters
+  - serverless-offline
+  - serverless-dynamodb-local
+
+custom:
+  tableName: ${self:service}-kittens-${sls:stage}
+  dynamodb:
+    stages:
+      - dev
+    start:
+      port: 8000
+      inMemory: true
+      migrate: true
+    migration:
+      dir: offline/migrations
+
 functions:
   kittens_create:
     handler: handler.kittens_create
@@ -155,7 +169,7 @@ resources:
     kittensTable:
       Type: "AWS::DynamoDB::Table"
       Properties:
-        TableName: ${self:service}-kittens-${opt:stage}
+        TableName: ${self:service}-kittens-${sls:stage}
         AttributeDefinitions:
           - AttributeName: kittenName
             AttributeType: S

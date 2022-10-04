@@ -1,6 +1,15 @@
+from concurrent.futures import process
 import json
 import boto3
 import os
+
+options = {}
+
+if (os.environ["IS_OFFLINE"]):
+    options = {
+        "region": "localhost",
+        "endpoint": "http://localhost:8000"
+    }
 
 
 def hello(event, context):

@@ -1,3 +1,5 @@
+# Prod Endpoints
+
 POST https://mzd992e64a.execute-api.us-east-1.amazonaws.com/dev/v1/addKitten
 
 GET https://mzd992e64a.execute-api.us-east-1.amazonaws.com/dev/v1/getAllKittens
@@ -7,3 +9,27 @@ GET https://mzd992e64a.execute-api.us-east-1.amazonaws.com/dev/v1/getKittenByNam
 PUT https://mzd992e64a.execute-api.us-east-1.amazonaws.com/dev/v1/updateKitten/{name}
 
 DELETE https://mzd992e64a.execute-api.us-east-1.amazonaws.com/dev/v1/deleteKitten/{name}
+
+# Local Endpoints
+
+
+POST http://localhost:3000/dev/v1/addKitten
+
+POST http://localhost:3000/2015-03-31/functions/kittens_create/invocations
+
+GET http://localhost:3000/dev/v1/getAllKittens
+
+POST http://localhost:3000/2015-03-31/functions/kittens_list/invocations
+
+GET http://localhost:3000/dev/v1/getKittenByName/{name}
+
+POST http://localhost:3000/2015-03-31/functions/kitten_by_name/invocations
+
+PUT http://localhost:3000/dev/v1/updateKitten/{name}
+
+POST http://localhost:3000/2015-03-31/functions/kittens_update/invocations
+
+DELETE http://localhost:3000/dev/v1/deleteKitten/{name}
+
+POST http://localhost:3000/2015-03-31/functions/kittens_delete/invocations
+
