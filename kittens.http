@@ -1,0 +1,7 @@
+POST https://mzd992e64a.execute-api.us-east-1.amazonaws.com/dev/v1/addKitten
+
+GET https://mzd992e64a.execute-api.us-east-1.amazonaws.com/dev/v1/getAllKittens
+
+PUT https://mzd992e64a.execute-api.us-east-1.amazonaws.com/dev/v1/updateKitten/{name}
+
+DELETE https://mzd992e64a.execute-api.us-east-1.amazonaws.com/dev/v1/deleteKitten/{name}
