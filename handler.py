@@ -1,5 +1,8 @@
+from ast import Expression
 from concurrent.futures import process
+from http import client
 import json
+from urllib import response
 import boto3
 import os
 
@@ -119,8 +122,70 @@ def kitten_by_name(event, context):
 
 
 def kittens_update(event, context):
-    pass
+    print("Event: ", event)
+    print("Context: ", context)
+    kitten_name = event["pathParameters"]["name"]
+    body = json.loads(event["body"])
+    kitten_age = body["age"]
+    print("Kitten Name: ", kitten_name)
+    print("Kitten Age: ", kitten_age)
+    dynamodb = boto3.client("dynamodb")
+    updatedResults = {}
+    try:
+        updatedResults = dynamodb.update_item(
+            TableName=os.environ["DYNAMODB_TABLE_NAME"],
+            Key={
+                "kittenName": {
+                    "S": str(kitten_name)
+                }
+            },
+            UpdateExpression="set kittenAge = :kAge",
+            # ExpressionAttributeNames={
+            #     "#KittenAge": "kittenAge"
+            # },
+            ExpressionAttributeValues={
+                ":kAge": {"S": str(kitten_age)}
+            },
+            ReturnValues="UPDATED_NEW"
+        )
+    except Exception as e:
+        response = {
+            "statusCode": 500,
+            "body": json.dumps("Some error occured!")
+        }
+        return response
+    response = {
+        "statusCode": 200,
+        "body": json.dumps("Kitten Updated Successfully!")
+    }
+    print("Updated Result: ", updatedResults)
+    return response
 
 
 def kittens_delete(event, context):
-    pass
+    print("Event: ", event)
+    print("Context: ", context)
+    kitten_name = event["pathParameters"]["name"]
+    dynamodb = boto3.client("dynamodb")
+    deletedResults = {}
+    try:
+        deletedResults = dynamodb.delete_item(
+            TableName=os.environ["DYNAMODB_TABLE_NAME"],
+            Key={
+                "kittenName": {
+                    "S": kitten_name
+                }
+            }
+        )
+    except Exception as e:
+        response = {
+            "statusCode": 500,
+            "body": json.dumps("Some error occured!")
+        }
+        return response
+    print("Deleted Results: ", deletedResults)
+    response = {
+        "statusCode": 200,
+        "body": json.dumps("Item Deleted Successfully!")
+    }
+    return response
